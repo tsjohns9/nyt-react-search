@@ -4,21 +4,22 @@ import API from '../utils/API';
 
 class Search extends Component {
   state = {
-    searchTerm: null,
-    searchQuantity: null,
-    startYear: null,
-    endYear: null
+    searchTerm: '',
+    searchQuantity: '',
+    startYear: '',
+    endYear: ''
   };
 
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
-      [name]: value
+      [name]: value.trim()
     });
   };
 
   searchArticles = e => {
     e.preventDefault();
+    API.scrapeArticles(this.state);
   };
 
   render() {
@@ -33,18 +34,16 @@ class Search extends Component {
             type="text"
             label="Search Term"
           />
-          <SelectOption onChange={this.handleInputChange} id="searchQuantity" />
+          <SelectOption onChange={this.handleInputChange} name="searchQuantity" />
           <Input
             name="startYear"
             onChange={this.handleInputChange}
-            id="startYear"
             type="text"
             label="Start Year (optional)"
           />
           <Input
             name="endYear"
             onChange={this.handleInputChange}
-            id="endYear"
             type="text"
             label="End Year (optional)"
           />

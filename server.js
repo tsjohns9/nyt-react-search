@@ -1,10 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const routes = require('./routes/api-routes');
 const app = express();
 const PORT = process.env.PORT || 3001;
-require('dotenv').config();
 
 // Define middleware here
 app.use(bodyParser.urlencoded({ extended: true }));
