@@ -24,12 +24,33 @@ class Search extends Component {
   searchArticles = e => {
     e.preventDefault();
     API.scrapeArticles(this.state)
-      .then(res =>
+      .then(res => {
+        res = res.data.response.docs.map(a => {
+          const headline = a.headline.main;
+          delete a.headline;
+          delete a.score;
+          a.pub_date = a.pub_date.split('T')[0];
+          a.headline = headline;
+          return a;
+        });
         this.setState({
-          returnedArticles: res.data.response.docs.slice(0, this.state.searchQuantity)
-        })
-      )
+          returnedArticles: res.slice(0, this.state.searchQuantity)
+        });
+      })
       .catch(err => console.log(err));
+  };
+
+  clearArticles = () => {
+    this.setState({ returnedArticles: [] });
+  };
+
+  saveArticle = event => {
+    const article = this.state.returnedArticles[event.target.getAttribute('data-index')];
+    console.log('EVENT:', event.target);
+    console.log('ARTICLE:', article);
+    API.saveArticle(article)
+      .then(result => console.log('RESULT:', result))
+      .catch(err => console.log('ERR:', err));
   };
 
   render() {
@@ -61,23 +82,24 @@ class Search extends Component {
             <Btn id="search-articles" styles="btn btn-success mr-2" onClick={this.searchArticles}>
               Search Articles
             </Btn>
-            <Btn id="clear-articles" styles="btn btn-danger">
+            <Btn id="clear-articles" styles="btn btn-danger" onClick={this.clearArticles}>
               Clear Results
             </Btn>
           </form>
         </div>
         <div className="container">
           <Wrapper>
-            {this.state.returnedArticles.map(a => (
-              <div className="mb-4">
+            {this.state.returnedArticles.map((a, i) => (
+              <div className="mb-4" key={a.headline}>
                 <Article
                   headline={a.headline.main}
                   snippet={a.snippet}
-                  date={a.pub_date.split('T')[0]}
+                  date={a.pub_date}
                   href={a.web_url}
-                  key={a.headline.main}
                 />
-                <Btn styles="btn btn-primary save">Save Article</Btn>
+                <Btn onClick={this.saveArticle} index={i} styles="btn btn-primary save">
+                  Save Article
+                </Btn>
               </div>
             ))}
           </Wrapper>

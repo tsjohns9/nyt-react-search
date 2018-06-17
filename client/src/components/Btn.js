@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Btn = props => (
-  <button onClick={props.onClick} className={props.styles}>
+  <button onClick={props.onClick} className={props.styles} data-index={props.index}>
     {props.children}
   </button>
 );
