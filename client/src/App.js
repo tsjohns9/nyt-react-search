@@ -7,7 +7,7 @@ const App = () => (
   <Router>
     <div>
       <Nav />
-      <Search />
+      <Route exact path="/" component={Search} />
     </div>
   </Router>
 );
