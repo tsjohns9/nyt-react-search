@@ -1,12 +1,15 @@
-import React from "react";
-import Books from "./pages/Books";
-import Nav from "./components/Nav";
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Nav from './components/Nav';
+import Search from './components/Search';
 
 const App = () => (
-  <div>
-    <Nav />
-    <Books />
-  </div>
+  <Router>
+    <div>
+      <Nav />
+      <Search />
+    </div>
+  </Router>
 );
 
 export default App;
