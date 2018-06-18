@@ -92,7 +92,7 @@ class Search extends Component {
             {this.state.returnedArticles.map((a, i) => (
               <div className="mb-4" key={a.headline}>
                 <Article
-                  headline={a.headline.main}
+                  headline={a.headline}
                   snippet={a.snippet}
                   date={a.pub_date}
                   href={a.web_url}

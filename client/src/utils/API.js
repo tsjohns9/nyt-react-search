@@ -2,6 +2,7 @@ import axios from 'axios';
 require('dotenv').config();
 
 export default {
+  // gets articles from nytimes
   scrapeArticles: function(searchParams) {
     const { searchTerm, startYear, endYear } = searchParams;
     const fields = '&fl=headline,web_url,pub_date,snippet';
@@ -20,15 +21,18 @@ export default {
         query
     );
   },
-  // Gets the book with the given id
-  getSavedArticles: function(id) {
-    return axios.get('/api/articles/' + id);
+
+  // Gets all saved articles
+  getSavedArticles: function() {
+    return axios.get('/api/articles/');
   },
-  // Saves a book to the database
+
+  // Saves an article
   saveArticle: function(article) {
     return axios.post('/api/articles', article);
   },
-  // Deletes the book with the given id
+
+  // Deletes an article
   nukeArticle: function(id) {
     return axios.delete('/api/articles/' + id);
   }
