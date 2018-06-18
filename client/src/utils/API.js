@@ -5,7 +5,11 @@ export default {
   // gets articles from nytimes
   scrapeArticles: function(searchParams) {
     const { searchTerm, startYear, endYear } = searchParams;
+
+    // builds the query string
     const fields = '&fl=headline,web_url,pub_date,snippet';
+
+    // checks which values were submitted by the user to make the search
     const query =
       startYear && endYear
         ? `${searchTerm}&begin_date=${startYear}0101&end_date=${endYear}0101${fields}`
@@ -15,6 +19,7 @@ export default {
             ? `${searchTerm}&end_date=${endYear}0101${fields}`
             : searchTerm + fields;
 
+    // performs the search
     return axios.get(
       'https://api.nytimes.com/svc/search/v2/articlesearch.json' +
         '?api-key=3b279b386eb14499b1441b9cf5cb6ae0&q=' +

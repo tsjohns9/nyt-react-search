@@ -14,6 +14,7 @@ class Search extends Component {
     returnedArticles: []
   };
 
+  // used to store the search parameters. updates state on change
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -21,18 +22,33 @@ class Search extends Component {
     });
   };
 
+  // searches for articles based on user input
   searchArticles = e => {
     e.preventDefault();
+    // send the current state values to API
     API.scrapeArticles(this.state)
       .then(res => {
+        // update each article to match the Article Schema requirements
         res = res.data.response.docs.map(a => {
+          // grab the main headline
           const headline = a.headline.main;
+
+          // delete the extra values stored on headline
           delete a.headline;
+
+          // delete the returned score value
           delete a.score;
+
+          // grab the human readable date
           a.pub_date = a.pub_date.split('T')[0];
+
+          // update the headline to have the main headline only
           a.headline = headline;
+
           return a;
         });
+        // the api result returns 10 articles each time.
+        // slice return the result based on the quantity param
         this.setState({
           returnedArticles: res.slice(0, this.state.searchQuantity)
         });
@@ -40,14 +56,15 @@ class Search extends Component {
       .catch(err => console.log(err));
   };
 
+  // clears the article results
   clearArticles = () => {
     this.setState({ returnedArticles: [] });
   };
 
+  // saves an article to the db
   saveArticle = event => {
+    // grabs the article to save based on its index value in the state.returnedArticles array
     const article = this.state.returnedArticles[event.target.getAttribute('data-index')];
-    console.log('EVENT:', event.target);
-    console.log('ARTICLE:', article);
     API.saveArticle(article)
       .then(result => console.log('RESULT:', result))
       .catch(err => console.log('ERR:', err));
@@ -79,10 +96,14 @@ class Search extends Component {
               type="text"
               label="End Year (optional)"
             />
-            <Btn id="search-articles" styles="btn btn-success mr-2" onClick={this.searchArticles}>
+            <Btn
+              id="search-articles"
+              className="btn btn-success mr-2"
+              onClick={this.searchArticles}
+            >
               Search Articles
             </Btn>
-            <Btn id="clear-articles" styles="btn btn-danger" onClick={this.clearArticles}>
+            <Btn id="clear-articles" className="btn btn-danger" onClick={this.clearArticles}>
               Clear Results
             </Btn>
           </form>
@@ -97,7 +118,7 @@ class Search extends Component {
                   date={a.pub_date}
                   href={a.web_url}
                 />
-                <Btn onClick={this.saveArticle} index={i} styles="btn btn-primary save">
+                <Btn onClick={this.saveArticle} data-index={i} className="btn btn-primary save">
                   Save Article
                 </Btn>
               </div>

@@ -1,6 +1,5 @@
 const Article = require('../models/Article');
 
-// Defining methods for the booksController
 module.exports = {
   create: function(req, res) {
     Article.create(req.body)
@@ -11,6 +10,12 @@ module.exports = {
   findAll: function(req, res) {
     Article.find({})
       .then(allArticles => res.send(allArticles))
+      .catch(err => console.log(err));
+  },
+
+  delete: function(req, res) {
+    Article.deleteOne(req.body)
+      .then(removedArticle => res.send(removedArticle))
       .catch(err => console.log(err));
   }
 };
