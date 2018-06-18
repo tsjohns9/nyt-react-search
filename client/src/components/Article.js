@@ -1,12 +1,13 @@
 import React from 'react';
 
 const Article = props => (
-  <div>
+  <div className="border-bottom">
     <a href={props.href} target="_blank">
       <h3>{props.headline}</h3>
     </a>
     <p>{props.snippet}</p>
     <p>{props.date}</p>
+    {props.children}
   </div>
 );
 

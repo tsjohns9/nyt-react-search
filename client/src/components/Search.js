@@ -64,7 +64,9 @@ class Search extends Component {
   // saves an article to the db
   saveArticle = event => {
     // grabs the article to save based on its index value in the state.returnedArticles array
-    const article = this.state.returnedArticles[event.target.getAttribute('data-index')];
+    const article = this.state.returnedArticles[
+      event.target.getAttribute('data-index')
+    ];
     API.saveArticle(article)
       .then(result => console.log('RESULT:', result))
       .catch(err => console.log('ERR:', err));
@@ -83,7 +85,10 @@ class Search extends Component {
               type="text"
               label="Search Term"
             />
-            <SelectOption onChange={this.handleInputChange} name="searchQuantity" />
+            <SelectOption
+              onChange={this.handleInputChange}
+              name="searchQuantity"
+            />
             <Input
               name="startYear"
               onChange={this.handleInputChange}
@@ -98,12 +103,16 @@ class Search extends Component {
             />
             <Btn
               id="search-articles"
-              className="btn btn-success mr-2"
+              className="btn btn-primary mr-2"
               onClick={this.searchArticles}
             >
               Search Articles
             </Btn>
-            <Btn id="clear-articles" className="btn btn-danger" onClick={this.clearArticles}>
+            <Btn
+              id="clear-articles"
+              className="btn btn-primary"
+              onClick={this.clearArticles}
+            >
               Clear Results
             </Btn>
           </form>
@@ -117,10 +126,15 @@ class Search extends Component {
                   snippet={a.snippet}
                   date={a.pub_date}
                   href={a.web_url}
-                />
-                <Btn onClick={this.saveArticle} data-index={i} className="btn btn-primary save">
-                  Save Article
-                </Btn>
+                >
+                  <Btn
+                    onClick={this.saveArticle}
+                    data-index={i}
+                    className="btn mb-3 btn-secondary"
+                  >
+                    Save Article
+                  </Btn>
+                </Article>
               </div>
             ))}
           </Wrapper>

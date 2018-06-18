@@ -45,22 +45,33 @@ class SavedArticles extends Component {
   }
 
   render() {
+    const savedArticles = this.state.savedArticles;
     console.log(this.state);
     return (
       <Wrapper>
-        {this.state.savedArticles.map((a, i) => (
-          <div className="mb-4" key={i}>
-            <Article headline={a.headline} snippet={a.snippet} date={a.pub_date} href={a.web_url} />
-            <Btn
-              data-index={i}
-              data-id={a._id}
-              onClick={this.nukeArticle}
-              className="btn btn-primary delete-article"
-            >
-              Delete Article
-            </Btn>
-          </div>
-        ))}
+        {savedArticles.length ? (
+          savedArticles.map((a, i) => (
+            <div className="mb-4" key={i}>
+              <Article
+                headline={a.headline}
+                snippet={a.snippet}
+                date={a.pub_date}
+                href={a.web_url}
+              >
+                <Btn
+                  data-index={i}
+                  data-id={a._id}
+                  onClick={this.nukeArticle}
+                  className="btn delete-article save mb-3 btn-secondary"
+                >
+                  Delete Article
+                </Btn>
+              </Article>
+            </div>
+          ))
+        ) : (
+          <h2 className="text-center">No Saved Articles</h2>
+        )}
       </Wrapper>
     );
   }
