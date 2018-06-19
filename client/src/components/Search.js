@@ -33,7 +33,7 @@ class Search extends Component {
           // grab the main headline
           const headline = a.headline.main;
 
-          // delete the extra values stored on headline
+          // delete the original headline value
           delete a.headline;
 
           // delete the returned score value
@@ -42,7 +42,7 @@ class Search extends Component {
           // grab the human readable date
           a.pub_date = a.pub_date.split('T')[0];
 
-          // update the headline to have the main headline only
+          // create new headline with main headline info only
           a.headline = headline;
 
           return a;
@@ -57,19 +57,29 @@ class Search extends Component {
   };
 
   // clears the article results
-  clearArticles = () => {
+  clearArticles = e => {
+    e.preventDefault();
     this.setState({ returnedArticles: [] });
   };
 
   // saves an article to the db
   saveArticle = event => {
+    // creates a copy of the current state of returned articles so its values can be mutated
+    const allArticles = this.state.returnedArticles.slice();
+
     // grabs the article to save based on its index value in the state.returnedArticles array
-    const article = this.state.returnedArticles[
-      event.target.getAttribute('data-index')
-    ];
+    const article = allArticles[event.target.getAttribute('data-index')];
+
+    // article.result is used to indicate a user successfuly saved an article, or if it was already saved.
     API.saveArticle(article)
-      .then(result => console.log('RESULT:', result))
-      .catch(err => console.log('ERR:', err));
+      .then(res => {
+        article.result = res.data;
+        this.setState({ returnedArticles: allArticles });
+      })
+      .catch(() => {
+        article.result = 'An error occured while saving the article';
+        this.setState({ returnedArticles: allArticles });
+      });
   };
 
   render() {
@@ -127,13 +137,18 @@ class Search extends Component {
                   date={a.pub_date}
                   href={a.web_url}
                 >
-                  <Btn
-                    onClick={this.saveArticle}
-                    data-index={i}
-                    className="btn mb-3 btn-secondary"
-                  >
-                    Save Article
-                  </Btn>
+                  {!a.result ? (
+                    <Btn
+                      onClick={this.saveArticle}
+                      data-index={i}
+                      className="btn mb-3 btn-secondary"
+                    >
+                      Save Article
+                    </Btn>
+                  ) : (
+                    // renders a response when saving an article
+                    a.result
+                  )}
                 </Article>
               </div>
             ))}

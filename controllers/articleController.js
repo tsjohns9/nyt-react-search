@@ -3,14 +3,14 @@ const Article = require('../models/Article');
 module.exports = {
   create: function(req, res) {
     Article.create(req.body)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => console.log(err));
+      .then(() => res.json('Article Saved'))
+      .catch(() => res.send('Article already saved'));
   },
 
   findAll: function(req, res) {
     Article.find({})
       .then(allArticles => res.send(allArticles))
-      .catch(err => console.log(err));
+      .catch(err => console.log('13, ERR:', err));
   },
 
   delete: function(req, res) {
