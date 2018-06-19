@@ -113,7 +113,7 @@ class Search extends Component {
             />
             <Btn
               id="search-articles"
-              className="btn btn-primary mr-2"
+              className="btn btn-primary mb-2 mb-sm-0 mr-sm-2"
               onClick={this.searchArticles}
             >
               Search Articles
@@ -147,7 +147,15 @@ class Search extends Component {
                     </Btn>
                   ) : (
                     // renders a response when saving an article
-                    a.result
+                    <p
+                      className={
+                        a.result === 'Article Saved'
+                          ? 'text-success'
+                          : 'text-danger'
+                      }
+                    >
+                      {a.result}
+                    </p>
                   )}
                 </Article>
               </div>

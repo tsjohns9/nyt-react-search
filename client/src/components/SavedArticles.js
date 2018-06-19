@@ -22,19 +22,25 @@ class SavedArticles extends Component {
     // saves the target to use in the .then on a successful delete
     const target = event.target;
 
-    // the article _id gets saved on the button for the article. grabs the article id
-    const articleToNuke = { _id: target.getAttribute('data-id') };
-
     // makes a copy of the current saved articles before mutating
     const allArticles = this.state.savedArticles.slice();
 
+    // the article _id gets saved on the button for the article. grabs the article id
+    const articleToNuke = { _id: target.getAttribute('data-id') };
+
     return API.nukeArticle(articleToNuke)
       .then(() => {
+        // adds a class to fade out the deleted article
+        allArticles[target.getAttribute('data-index')].fade = 'delete-article';
+
+        // updates state to add the fade class to the deleted article
+        this.setState({ savedArticles: allArticles });
+
         // removes the deleted article
         allArticles.splice(target.getAttribute('data-index'), 1);
 
         // updates state on a successful response from the db with the new articles array
-        this.setState({ savedArticles: allArticles });
+        setTimeout(() => this.setState({ savedArticles: allArticles }), 400);
       })
       .catch(err => console.log(err));
   };
@@ -57,12 +63,13 @@ class SavedArticles extends Component {
                 snippet={a.snippet}
                 date={a.pub_date}
                 href={a.web_url}
+                fade={a.fade ? a.fade : ''}
               >
                 <Btn
                   data-index={i}
                   data-id={a._id}
                   onClick={this.nukeArticle}
-                  className="btn delete-article save mb-3 btn-secondary"
+                  className="btn save mb-3 btn-secondary"
                 >
                   Delete Article
                 </Btn>
