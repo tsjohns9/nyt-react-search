@@ -3,6 +3,9 @@ import { Form } from './Form';
 import Wrapper from './Wrapper';
 import ColumnOffset from './ColumnOffset';
 import API from '../utils/API';
+import ReallySmoothScroll from 'really-smooth-scroll';
+
+ReallySmoothScroll.shim();
 
 class Search extends Component {
   state = {
@@ -51,6 +54,8 @@ class Search extends Component {
         this.setState({
           returnedArticles: res.slice(0, this.state.searchQuantity)
         });
+
+        window.scrollTo(0, 500);
       })
       .catch(err => console.log(err));
   };
@@ -58,7 +63,8 @@ class Search extends Component {
   // clears the article results
   clearArticles = e => {
     e.preventDefault();
-    this.setState({ returnedArticles: [] });
+    window.scrollTo(0, 0);
+    setTimeout(() => this.setState({ returnedArticles: [] }), 500);
   };
 
   // saves an article to the db
