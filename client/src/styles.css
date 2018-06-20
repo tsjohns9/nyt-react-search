@@ -2,8 +2,16 @@
   font-family: 'Merriweather', serif;
 }
 
+body {
+  background-color: #fafafa;
+}
+
+form {
+  background-color: white;
+}
+
 .banner {
-  background-image: url('./diagmonds.png') !important;
+  background-image: url('./connectwork.png') !important;
   height: 200px;
   margin: 0 0 30px 0 !important;
   padding: 0 !important;

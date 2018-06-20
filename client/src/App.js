@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Nav from './components/Nav';
 import Search from './components/Search';
 import SavedArticles from './components/SavedArticles';
@@ -11,8 +11,11 @@ const App = () => (
     <div>
       <Nav />
       <Banner />
-      <Route exact path="/" component={Search} />
-      <Route exact path="/saved" component={SavedArticles} />
+      <Switch>
+        <Route exact path="/" component={Search} />
+        <Route exact path="/saved" component={SavedArticles} />
+        <Route component={Search} />
+      </Switch>
     </div>
   </Router>
 );

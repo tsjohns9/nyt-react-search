@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import API from '../utils/API';
 import Wrapper from './Wrapper';
-import Article from './Article';
-import Btn from './Btn';
 
 class SavedArticles extends Component {
   // will store all saved articles from the db once the DOM loads
@@ -51,35 +49,16 @@ class SavedArticles extends Component {
   }
 
   render() {
-    const savedArticles = this.state.savedArticles;
+    const state = this.state;
+    // const savedArticles = this.state.savedArticles;
     console.log(this.state);
     return (
-      <Wrapper>
-        {savedArticles.length ? (
-          savedArticles.map((a, i) => (
-            <div className="mb-4" key={i}>
-              <Article
-                headline={a.headline}
-                snippet={a.snippet}
-                date={a.pub_date}
-                href={a.web_url}
-                fade={a.fade ? a.fade : ''}
-              >
-                <Btn
-                  data-index={i}
-                  data-id={a._id}
-                  onClick={this.nukeArticle}
-                  className="btn save mb-3 btn-secondary"
-                >
-                  Delete Article
-                </Btn>
-              </Article>
-            </div>
-          ))
-        ) : (
-          <h2 className="text-center">No Saved Articles</h2>
-        )}
-      </Wrapper>
+      <Wrapper
+        onClick={this.nukeArticle}
+        articles={state.savedArticles}
+        btnText="Delete Article"
+        page="saved"
+      />
     );
   }
 }

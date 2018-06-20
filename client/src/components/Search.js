@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Input, SelectOption } from './Form';
-import Btn from './Btn';
+import { Form } from './Form';
 import Wrapper from './Wrapper';
-import Article from './Article';
+import ColumnOffset from './ColumnOffset';
 import API from '../utils/API';
 
 class Search extends Component {
@@ -83,85 +82,26 @@ class Search extends Component {
   };
 
   render() {
+    const state = this.state;
     console.log('STATE:', this.state);
     return (
       <div>
         <div className="container mb-3">
-          <form className="border p-3">
-            <Input
-              name="searchTerm"
+          <ColumnOffset>
+            <Form
               onChange={this.handleInputChange}
-              id="searchTerm"
-              type="text"
-              label="Search Term"
+              onSearch={this.searchArticles}
+              onClear={this.clearArticles}
+              searchDisable={!state.searchTerm ? true : false}
+              clearDisable={!state.returnedArticles.length ? true : false}
             />
-            <SelectOption
-              onChange={this.handleInputChange}
-              name="searchQuantity"
-            />
-            <Input
-              name="startYear"
-              onChange={this.handleInputChange}
-              type="text"
-              label="Start Year (optional)"
-            />
-            <Input
-              name="endYear"
-              onChange={this.handleInputChange}
-              type="text"
-              label="End Year (optional)"
-            />
-            <Btn
-              id="search-articles"
-              className="btn btn-primary mb-2 mb-sm-0 mr-sm-2"
-              onClick={this.searchArticles}
-            >
-              Search Articles
-            </Btn>
-            <Btn
-              id="clear-articles"
-              className="btn btn-primary"
-              onClick={this.clearArticles}
-            >
-              Clear Results
-            </Btn>
-          </form>
+          </ColumnOffset>
         </div>
-        <div className="container">
-          <Wrapper>
-            {this.state.returnedArticles.map((a, i) => (
-              <div className="mb-4" key={a.headline}>
-                <Article
-                  headline={a.headline}
-                  snippet={a.snippet}
-                  date={a.pub_date}
-                  href={a.web_url}
-                >
-                  {!a.result ? (
-                    <Btn
-                      onClick={this.saveArticle}
-                      data-index={i}
-                      className="btn mb-3 btn-secondary"
-                    >
-                      Save Article
-                    </Btn>
-                  ) : (
-                    // renders a response when saving an article
-                    <p
-                      className={
-                        a.result === 'Article Saved'
-                          ? 'text-success'
-                          : 'text-danger'
-                      }
-                    >
-                      {a.result}
-                    </p>
-                  )}
-                </Article>
-              </div>
-            ))}
-          </Wrapper>
-        </div>
+        <Wrapper
+          articles={state.returnedArticles}
+          onClick={this.saveArticle}
+          btnText="Save Article"
+        />
       </div>
     );
   }
