@@ -7,7 +7,6 @@ export const Form = props => (
     <Input
       name="searchTerm"
       onChange={props.onChange}
-      id="searchTerm"
       type="text"
       label="Search Term"
     />
@@ -15,13 +14,13 @@ export const Form = props => (
     <Input
       name="startYear"
       onChange={props.onChange}
-      type="text"
+      type="number"
       label="Start Year (optional)"
     />
     <Input
       name="endYear"
       onChange={props.onChange}
-      type="text"
+      type="number"
       label="End Year (optional)"
     />
     <Btn

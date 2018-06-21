@@ -2,12 +2,12 @@ import React from 'react';
 
 export const Input = props => (
   <div className="form-group">
-    <label htmlFor={props.id}>{props.label}</label>
+    <label htmlFor={props.name}>{props.label}</label>
     <input
       id={props.name}
-      onChange={props.onChange}
       className="form-control"
-      type={props.text}
+      onChange={props.onChange}
+      type={props.type}
       name={props.name}
     />
   </div>
