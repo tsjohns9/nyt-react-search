@@ -13,12 +13,27 @@ class Search extends Component {
     searchQuantity: 1,
     startYear: '',
     endYear: '',
+    errMsg: '',
     returnedArticles: []
   };
 
   // used to store the search parameters. updates state on change
   handleInputChange = event => {
-    const { name, value } = event.target;
+    const { name } = event.target;
+    let { value } = event.target;
+
+    // removes letters from start and end year search
+    if (name === 'startYear' || name === 'endYear') {
+      if (isNaN(value.slice(-1))) {
+        value = value.replace(/[^0-9]+/g, '');
+      }
+    }
+
+    // prevents the user from searching a year with more than 4 digits
+    if (name === 'startYear' || (name === 'endYear' && value.length > 4)) {
+      value = value.slice(0, 4);
+    }
+
     this.setState({
       [name]: value.trim()
     });
@@ -52,12 +67,19 @@ class Search extends Component {
         // the api result returns 10 articles each time.
         // slice return the result based on the quantity param
         this.setState({
+          searchTerm: '',
+          startYear: '',
+          endYear: '',
+          errMsg: '',
           returnedArticles: res.slice(0, this.state.searchQuantity)
         });
 
         window.scrollTo(0, 500);
       })
-      .catch(err => console.log(err));
+      .catch(() => {
+        this.setState({ errMsg: 'No articles found' });
+        window.scrollTo(0, 80);
+      });
   };
 
   // clears the article results
@@ -95,6 +117,7 @@ class Search extends Component {
         <div className="container mb-3">
           <ColumnOffset>
             <Form
+              value={this.state}
               onChange={this.handleInputChange}
               onSearch={this.searchArticles}
               onClear={this.clearArticles}
@@ -103,11 +126,15 @@ class Search extends Component {
             />
           </ColumnOffset>
         </div>
-        <Wrapper
-          articles={state.returnedArticles}
-          onClick={this.saveArticle}
-          btnText="Save Article"
-        />
+        {!state.errMsg ? (
+          <Wrapper
+            articles={state.returnedArticles}
+            onClick={this.saveArticle}
+            btnText="Save Article"
+          />
+        ) : (
+          <h2 className="text-center">{state.errMsg}</h2>
+        )}
       </div>
     );
   }

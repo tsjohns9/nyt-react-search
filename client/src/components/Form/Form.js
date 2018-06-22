@@ -9,19 +9,22 @@ export const Form = props => (
       onChange={props.onChange}
       type="text"
       label="Search Term"
+      value={props.value.searchTerm}
     />
     <SelectOption onChange={props.onChange} name="searchQuantity" />
     <Input
       name="startYear"
       onChange={props.onChange}
-      type="number"
+      type="text"
       label="Start Year (optional)"
+      value={props.value.startYear}
     />
     <Input
       name="endYear"
       onChange={props.onChange}
-      type="number"
+      type="text"
       label="End Year (optional)"
+      value={props.value.endYear}
     />
     <Btn
       id="search-articles"

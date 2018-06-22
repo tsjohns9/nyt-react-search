@@ -4,19 +4,22 @@ import Nav from './components/Nav';
 import Search from './components/Search';
 import SavedArticles from './components/SavedArticles';
 import Banner from './components/Banner';
-// import Footer from './components/Footer';
+import Footer from './components/Footer';
 
 const App = () => (
   <Router>
-    <div>
-      <Nav />
-      <Banner />
-      <Switch>
-        <Route exact path="/" component={Search} />
-        <Route exact path="/saved" component={SavedArticles} />
-        <Route component={Search} />
-      </Switch>
-    </div>
+    <React.Fragment>
+      <div className="main-height">
+        <Nav />
+        <Banner />
+        <Switch>
+          <Route exact path="/" component={Search} />
+          <Route exact path="/saved" component={SavedArticles} />
+          <Route component={Search} />
+        </Switch>
+      </div>
+      <Footer />
+    </React.Fragment>
   </Router>
 );
 
